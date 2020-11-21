@@ -1,0 +1,49 @@
+<h1>Makelaars Details</h1>
+<div>
+  <label for="city">City</label>
+  <input type="text" id="city" [(ngModel)]="chosenCity" />
+  <br/>
+  <div>  <input type="button" value="Get All Makelaars" (click)="getAllMakelaars(chosenCity)" /> </div>
+  <br/>
+  <div>  <input type="button" value="Get Top Makelaars" (click)="getTopMakelaars(chosenCity)" /> </div>
+  <br/>
+  <div>  <input type="button" value="Get Top 10 Makelaars with tuin" (click)="getTopMakelaarsWithTuin(chosenCity)" /> </div>
+</div>
+
+<div *ngIf="aanbodObjects">
+  <h3>All Makelaars</h3>
+
+  <table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+      <th>MakelaarId</th>
+      <th>MakelaarName</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let aanbodObject of aanbodObjects">
+      <td>{{ aanbodObject.makelaarId }}</td>
+      <td>{{ aanbodObject.makelaarNaam }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="topMakelaars">
+  <h3>Top 10 Makelaars</h3>
+
+  <table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+      <th>Top 10 Makelaar</th>
+      <th>Count</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let makelaar of topMakelaars">
+      <td>{{ makelaar.makelaarId }}</td>
+      <td>{{ makelaar.count }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
