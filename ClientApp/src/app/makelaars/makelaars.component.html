@@ -1,49 +1,63 @@
-<h1>Makelaars Details</h1>
+<h1>List of Makelaars</h1>
 <div>
-  <label for="city">City</label>
-  <input type="text" id="city" [(ngModel)]="chosenCity" />
-  <br/>
-  <div>  <input type="button" value="Get All Makelaars" (click)="getAllMakelaars(chosenCity)" /> </div>
-  <br/>
-  <div>  <input type="button" value="Get Top Makelaars" (click)="getTopMakelaars(chosenCity)" /> </div>
-  <br/>
-  <div>  <input type="button" value="Get Top 10 Makelaars with tuin" (click)="getTopMakelaarsWithTuin(chosenCity)" /> </div>
+  <div>
+    <label class="mb-2 mr-2" for="city">City</label>
+    <input class="mb-2 mr-2" type="text" id="city" name="city" [(ngModel)]="chosenCity" required #city="ngModel"/>
+
+    <div class="btn-group mb-2 mr-2 my-auto" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-lg btn-primary mb-2 mr-2 my-auto" (click)="getAllMakelaars(chosenCity)" [disabled]="!city.valid">Get All Makelaars</button>
+      <button type="button" class="btn btn-lg btn-primary mb-2 mr-2 my-auto" (click)="getTopMakelaars(chosenCity)" [disabled]="!city.valid">Get Top 10 Makelaars</button>
+      <button type="button" class="btn btn-lg btn-primary mb-2 mr-2 my-auto" (click)="getTopMakelaarsWithTuin(chosenCity)" [disabled]="!city.valid" >Get Top 10 Makelaars with tuin</button>
+    </div>
+  </div>
+
+  <div *ngIf="city.invalid && (city.dirty || city.touched)" class="alert alert-danger">
+    <div *ngIf="city.errors.required"> City is required. </div>
+  </div>
+
+  <div *ngIf="aanbodObjects && aanbodObjects.length > 0">
+    <h3>All Makelaars</h3>
+
+    <table class="table table-bordered table-striped">
+      <thead>
+      <tr>
+        <th>MakelaarId</th>
+        <th>MakelaarName</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let aanbodObject of aanbodObjects">
+        <td>{{ aanbodObject.makelaarId }}</td>
+        <td>{{ aanbodObject.makelaarNaam }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="aanbodObjects && !aanbodObjects.length > 0" class="alert alert-primary" role="alert"> No Makelaars found </div>
+
+  <div *ngIf="topMakelaars && topMakelaars.length > 0">
+    <h3>Top 10 Makelaars</h3>
+
+    <table class="table table-bordered table-striped">
+      <thead>
+      <tr>
+        <th>Makelaar Id</th>
+        <th>Maakelaar Name</th>
+        <th>Properties Count</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let makelaar of topMakelaars.slice(0,10)">
+        <td>{{ makelaar.makelaarId }}</td>
+        <td>{{ makelaar.makelaarName}}</td>
+        <td>{{ makelaar.count }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="topMakelaars && !topMakelaars.length > 0" class="alert alert-primary" role="alert"> No Makelaars found </div>
 </div>
 
-<div *ngIf="aanbodObjects">
-  <h3>All Makelaars</h3>
 
-  <table class="table table-bordered table-striped">
-    <thead>
-    <tr>
-      <th>MakelaarId</th>
-      <th>MakelaarName</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let aanbodObject of aanbodObjects">
-      <td>{{ aanbodObject.makelaarId }}</td>
-      <td>{{ aanbodObject.makelaarNaam }}</td>
-    </tr>
-    </tbody>
-  </table>
-</div>
-
-<div *ngIf="topMakelaars">
-  <h3>Top 10 Makelaars</h3>
-
-  <table class="table table-bordered table-striped">
-    <thead>
-    <tr>
-      <th>Top 10 Makelaar</th>
-      <th>Count</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let makelaar of topMakelaars">
-      <td>{{ makelaar.makelaarId }}</td>
-      <td>{{ makelaar.count }}</td>
-    </tr>
-    </tbody>
-  </table>
-</div>

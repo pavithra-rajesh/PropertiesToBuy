@@ -72,7 +72,8 @@ namespace funda.Controllers {
       var aanbodGroups = aanbodObjects.GroupBy(x => x.MakelaarId)
         .Select(group => new {
           MakelaarId = group.Key,
-          Count = group.Count()
+          Count = group.Count(),
+          MakelaarNaam = group.First().MakelaarNaam
         })
         .OrderByDescending(x => x.Count);
 
@@ -80,6 +81,7 @@ namespace funda.Controllers {
         var topMakelaar = new TopMakelaar();
         topMakelaar.MakelaarId = aanbodObject.MakelaarId;
         topMakelaar.Count = aanbodObject.Count;
+        topMakelaar.MakelaarName = aanbodObject.MakelaarNaam;
         topMakelaarsList.Add(topMakelaar);
       }
 

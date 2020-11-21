@@ -50,5 +50,6 @@ interface TopMakelaarsResponse {
 
 interface TopMakelaars {
   makelaarId: number;
+  makelaarName: string;
   count: number;
 }
