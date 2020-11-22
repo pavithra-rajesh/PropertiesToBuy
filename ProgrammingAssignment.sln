@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funda", "Funda.csproj", "{C9645270-FDBF-4A24-B938-BC7CF22BBC30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funda", "Funda\Funda.csproj", "{C9645270-FDBF-4A24-B938-BC7CF22BBC30}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FundaTest", "FundaTest\FundaTest.csproj", "{BD1E5BCC-0DDD-4F85-BF7E-0EF3AA8374EC}"
 EndProject
