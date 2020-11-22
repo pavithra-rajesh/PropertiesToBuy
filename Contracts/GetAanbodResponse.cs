@@ -1,6 +1,4 @@
-namespace test {
-
-
+namespace Funda.Contracts {
   public class GetAanbodResponse {
     public Object[] objects { get; set; }
   }

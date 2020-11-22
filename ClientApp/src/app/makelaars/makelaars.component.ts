@@ -8,29 +8,36 @@ import { HttpClient } from '@angular/common/http';
 export class MakelaarsComponent {
   aanbodObjects: Object[];
   topMakelaars: TopMakelaars[];
+  errorMessage: any;
 
   constructor(private httpClient: HttpClient) {
   }
 
   public getAllMakelaars(chosenCity: string) {
     this.topMakelaars = undefined;
-    this.httpClient.get('/api/makelaars/getallmakelaars/' + chosenCity).subscribe((result: AllMakelaarsResponse) => {
-      this.aanbodObjects = result.objects;
-    });
+    this.httpClient.get('/api/makelaars/getallmakelaars/' + chosenCity).subscribe(
+      (result: AllMakelaarsResponse) => {
+        this.errorMessage = null;
+        this.aanbodObjects = result.objects;
+      },
+      (error) => {
+        this.topMakelaars = undefined;
+        this.errorMessage = error;
+      });
   }
 
-  public getTopMakelaars(chosenCity: string) {
+  public getTopMakelaars(chosenCity: string, hasTuin: boolean = false) {
     this.aanbodObjects = undefined;
-    this.httpClient.get('/api/makelaars/gettopmakelaars/' + chosenCity).subscribe((result: TopMakelaarsResponse) => {
-      this.topMakelaars = result.topMakelaars;
-    });
-  }
-
-  public getTopMakelaarsWithTuin(chosenCity: string) {
-    this.aanbodObjects = undefined;
-    this.httpClient.get('/api/makelaars/gettopmakelaarswithtuin/' + chosenCity).subscribe((result: TopMakelaarsResponse) => {
-      this.topMakelaars = result.topMakelaars;
-    });
+    const requestUri = '/api/makelaars/gettopmakelaars/' + chosenCity + '/' + hasTuin
+    this.httpClient.get(requestUri).subscribe(
+      (result: TopMakelaarsResponse) => {
+        this.errorMessage = null;
+        this.topMakelaars = result.topMakelaars;
+    },
+      (error) => {
+        this.topMakelaars = undefined;
+        this.errorMessage = error;
+      });
   }
 }
 

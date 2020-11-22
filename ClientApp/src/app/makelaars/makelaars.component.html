@@ -7,12 +7,16 @@
     <div class="btn-group mb-2 mr-2 my-auto" role="group" aria-label="Basic example">
       <button type="button" class="btn btn-lg btn-primary mb-2 mr-2 my-auto" (click)="getAllMakelaars(chosenCity)" [disabled]="!city.valid">Get All Makelaars</button>
       <button type="button" class="btn btn-lg btn-primary mb-2 mr-2 my-auto" (click)="getTopMakelaars(chosenCity)" [disabled]="!city.valid">Get Top 10 Makelaars</button>
-      <button type="button" class="btn btn-lg btn-primary mb-2 mr-2 my-auto" (click)="getTopMakelaarsWithTuin(chosenCity)" [disabled]="!city.valid" >Get Top 10 Makelaars with tuin</button>
+      <button type="button" class="btn btn-lg btn-primary mb-2 mr-2 my-auto" (click)="getTopMakelaars(chosenCity, true)" [disabled]="!city.valid" >Get Top 10 Makelaars with tuin</button>
     </div>
   </div>
-
+  <br/>
   <div *ngIf="city.invalid && (city.dirty || city.touched)" class="alert alert-danger">
     <div *ngIf="city.errors.required"> City is required. </div>
+  </div>
+  <br/>
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    <div> {{ errorMessage.error }} </div>
   </div>
 
   <div *ngIf="aanbodObjects && aanbodObjects.length > 0">
