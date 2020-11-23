@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Funda.Contracts;
 
-namespace Funda {
+namespace Funda.Services {
   public interface IMakelaarService {
     Task<GetTopMakelaarsResponse> GetTopMakelaarsAsync(string city, bool hasTuin = false);
 
