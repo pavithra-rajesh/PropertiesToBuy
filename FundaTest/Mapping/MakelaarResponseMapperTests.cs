@@ -1,12 +1,11 @@
 using System;
-using System.Threading.Tasks;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Funda.Contracts;
-using Funda.Services;
-using Funda.Services.Mapping;
+using Funda.Services.Dto;
+using Funda.Services.Mappers;
 using FundaTest.Builders;
-using Moq;
+using FundaTest.Builders.Contracts;
 using Xunit;
 
 namespace FundaTest.Mapping {
@@ -21,7 +20,7 @@ namespace FundaTest.Mapping {
     [Fact]
     public void ExtractTopMakelaarsFromResponse_WithEmptyResponse_ShouldThrowException() {
       // Arrange
-      const GetAanbodResponse response = null;
+      const AanbodResponse response = null;
 
       // Act
       Action action = () => _sut.ExtractTopMakelaarsFromResponse(response);
@@ -32,9 +31,9 @@ namespace FundaTest.Mapping {
     }
 
     [Fact]
-    public void ExtractTopMakelaarsFromResponse_WithGetAanbodResponseResponse_ShouldReturnExpectedResponse() {
+    public void ExtractTopMakelaarsFromResponse_WithAanbodResponseResponse_ShouldReturnExpectedResponse() {
       // Arrange
-      var getAanbodResponse = new Builder().CreateNew<GetAanbodResponse>()
+      var aanbodResponse = new Builder().CreateNew<AanbodResponse>()
         .WithDefaults()
         .Build();
 
@@ -43,10 +42,28 @@ namespace FundaTest.Mapping {
         .Build();
 
       // Act
-      var result = _sut.ExtractTopMakelaarsFromResponse(getAanbodResponse);
+      var result = _sut.ExtractTopMakelaarsFromResponse(aanbodResponse);
 
       // Assert
       result.Should().BeEquivalentTo(getTopMakelaarsResponse);
+    }
+
+    [Fact]
+    public void MapAanbodResponse_WithAanbodResponseResponse_ShouldReturnExpectedResponse() {
+      // Arrange
+      var aanbodResponse = new Builder().CreateNew<AanbodResponse>()
+        .WithDefaults()
+        .Build();
+
+      var getAanbodResponse = new Builder().CreateNew<GetAanbodResponse>()
+        .WithDefaults()
+        .Build();
+
+      // Act
+      var result = _sut.MapAanbodResponse(aanbodResponse);
+
+      // Assert
+      result.Should().BeEquivalentTo(getAanbodResponse);
     }
   }
 }

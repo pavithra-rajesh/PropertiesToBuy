@@ -1,7 +1,9 @@
 using AspNetCoreRateLimit;
+using AutoMapper;
 using Funda.Configuration;
 using Funda.Services;
-using Funda.Services.Mapping;
+using Funda.Services.Mappers;
+using Funda.Services.Mappings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -52,6 +54,9 @@ namespace Funda {
 
       // Add ResponseCaching
       services.AddResponseCaching();
+
+      // Add Automapper
+      services.AddAutoMapper(typeof(MappingProfile));
 
       // Resolve service dependencies
       services.AddScoped<IMakelaarService,MakelaarService>();

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Funda.Contracts;
 using Funda.Services.Dto;
+using TopMakelaar = Funda.Contracts.TopMakelaar;
 
-namespace Funda.Services.Mapping {
+namespace Funda.Services.Mappers {
   public class MakelaarsResponseMapper: IMakelaarsResponseMapper {
-    public GetTopMakelaarsResponse ExtractTopMakelaarsFromResponse(GetAanbodResponse response) {
+    public GetTopMakelaarsResponse ExtractTopMakelaarsFromResponse(AanbodResponse response) {
       if (response == null) {
         throw new ArgumentNullException(nameof(response));
       }
@@ -34,6 +35,27 @@ namespace Funda.Services.Mapping {
       getTopmakelaarsResponse.topMakelaars = topMakelaarsList;
 
       return getTopmakelaarsResponse;
+    }
+
+    // TODO: Automapper is a simpler solution instead, tried using it but kept throwing unsupported mapping exception, so used this as a temp. solution
+    public GetAanbodResponse MapAanbodResponse(AanbodResponse response) {
+      if (response == null) {
+        throw new ArgumentNullException(nameof(response));
+      }
+      GetAanbodResponse getAanbodResponse = new GetAanbodResponse();
+      int numObjects = response.objects.Length;
+      getAanbodResponse.objects = new Contracts.Object[numObjects];
+      int i = 0;
+      foreach (var responseObject in response.objects) {
+        var aanbodObject = new Contracts.Object();
+        aanbodObject.MakelaarId = responseObject.MakelaarId;
+        aanbodObject.MakelaarNaam = responseObject.MakelaarNaam;
+        aanbodObject.Woonplaats = responseObject.Woonplaats;
+        getAanbodResponse.objects[i] = aanbodObject;
+        i++;
+      }
+
+      return getAanbodResponse;
     }
   }
 }

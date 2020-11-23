@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using Funda.Contracts;
+using Funda.Services.Dto;
 
 namespace Funda.Services {
   public interface IMakelaarServiceClient {
-    Task<GetAanbodResponse> GetAanbodAsync(string city, bool hasTuin = false);
+    Task<AanbodResponse> GetAanbodAsync(string city, bool hasTuin = false);
   }
 }

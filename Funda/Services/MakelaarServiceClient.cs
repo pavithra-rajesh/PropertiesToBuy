@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using Funda.Configuration;
-using Funda.Contracts;
+using Funda.Services.Dto;
 using Newtonsoft.Json;
 
 namespace Funda.Services {
@@ -20,7 +20,7 @@ namespace Funda.Services {
       _resourceWithApiKey = _resource + _fundaConfiguration.ApiKey;
     }
 
-    public async Task<GetAanbodResponse> GetAanbodAsync(string city, bool hasTuin = false) {
+    public async Task<AanbodResponse> GetAanbodAsync(string city, bool hasTuin = false) {
       if (string.IsNullOrEmpty(city)) {
         throw new ArgumentNullException(nameof(city));
       }
@@ -33,7 +33,7 @@ namespace Funda.Services {
           response.EnsureSuccessStatusCode();
 
           var stringResult = await response.Content.ReadAsStringAsync();
-          var aanbodResponse = JsonConvert.DeserializeObject<GetAanbodResponse>(stringResult);
+          var aanbodResponse = JsonConvert.DeserializeObject<AanbodResponse>(stringResult);
           return aanbodResponse;
         }
         catch (HttpRequestException httpRequestException) {

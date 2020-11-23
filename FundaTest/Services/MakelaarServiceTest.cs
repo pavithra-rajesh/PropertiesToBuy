@@ -1,11 +1,15 @@
 using System;
 using System.Threading.Tasks;
+using AutoMapper;
 using FizzWare.NBuilder;
 using FluentAssertions;
+using Funda;
 using Funda.Contracts;
 using Funda.Services;
-using Funda.Services.Mapping;
+using Funda.Services.Dto;
+using Funda.Services.Mappers;
 using FundaTest.Builders;
+using FundaTest.Builders.Contracts;
 using Moq;
 using Xunit;
 
@@ -14,6 +18,7 @@ namespace FundaTest.Services {
     #region Mocks
     private readonly Mock<IMakelaarsResponseMapper> _makelaarsResponseMapperMock;
     private readonly Mock<IMakelaarServiceClient> _makelaarServiceClientMock;
+    private readonly Mock<IMapper> _mapperMock;
     #endregion Mocks
 
     private readonly MakelaarService _sut;
@@ -21,8 +26,9 @@ namespace FundaTest.Services {
     public MakelaarResponseMapperTests() {
       _makelaarsResponseMapperMock = new Mock<IMakelaarsResponseMapper>();
       _makelaarServiceClientMock = new Mock<IMakelaarServiceClient>();
+      _mapperMock = new Mock<IMapper>();
       
-      _sut = new MakelaarService(_makelaarServiceClientMock.Object, _makelaarsResponseMapperMock.Object);
+      _sut = new MakelaarService(_makelaarServiceClientMock.Object, _makelaarsResponseMapperMock.Object, _mapperMock.Object);
     }
 
     [Fact]
@@ -60,14 +66,14 @@ namespace FundaTest.Services {
         .WithDefaults()
         .Build();
 
-      var getAanbodResponse = new Builder().CreateNew<GetAanbodResponse>()
+      var aanbodResponse = new Builder().CreateNew<AanbodResponse>()
         .WithDefaults()
         .Build();
 
       _makelaarServiceClientMock.Setup(m => m.GetAanbodAsync(city, false))
-        .ReturnsAsync(getAanbodResponse);
+        .ReturnsAsync(aanbodResponse);
 
-      _makelaarsResponseMapperMock.Setup(m => m.ExtractTopMakelaarsFromResponse(getAanbodResponse))
+      _makelaarsResponseMapperMock.Setup(m => m.ExtractTopMakelaarsFromResponse(aanbodResponse))
         .Returns(getTopMakelaarsResponse);
 
       // Act
@@ -87,14 +93,18 @@ namespace FundaTest.Services {
         .Build();
 
       var getAanbodResponse = new Builder().CreateNew<GetAanbodResponse>()
-        .WithDefaults(true)
+        .WithDefaults()
+        .Build();
+
+      var aanbodResponse = new Builder().CreateNew<AanbodResponse>()
+        .WithDefaults()
         .Build();
 
       _makelaarServiceClientMock.Setup(m => m.GetAanbodAsync(city, true))
-        .ReturnsAsync(getAanbodResponse)
+        .ReturnsAsync(aanbodResponse)
         .Verifiable();
 
-      _makelaarsResponseMapperMock.Setup(m => m.ExtractTopMakelaarsFromResponse(getAanbodResponse))
+      _makelaarsResponseMapperMock.Setup(m => m.ExtractTopMakelaarsFromResponse(aanbodResponse))
         .Returns(getTopMakelaarsResponse)
         .Verifiable();
 
@@ -116,8 +126,16 @@ namespace FundaTest.Services {
         .WithDefaults()
         .Build();
 
+      var aanbodResponse = new Builder().CreateNew<AanbodResponse>()
+        .WithDefaults()
+        .Build();
+
       _makelaarServiceClientMock.Setup(m => m.GetAanbodAsync(city, false))
-        .ReturnsAsync(getAanbodResponse)
+        .ReturnsAsync(aanbodResponse)
+        .Verifiable();
+
+      _makelaarsResponseMapperMock.Setup(m => m.MapAanbodResponse(aanbodResponse))
+        .Returns(getAanbodResponse)
         .Verifiable();
 
       // Act
@@ -126,6 +144,7 @@ namespace FundaTest.Services {
       // Assert
       result.Should().BeEquivalentTo(getAanbodResponse);
       _makelaarServiceClientMock.Verify();
+      _makelaarsResponseMapperMock.Verify();
     }
   }
 }
